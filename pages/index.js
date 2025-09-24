@@ -34,7 +34,7 @@ export default function Home() {
           <section id="about" className="section">
             <h2>about</h2>
             <p>
-             08.17.2025 – hey, i’m matt. i’m based in chicago and currently work on the sales team at stripe. things i’m into include film, retro hardware (gaming hardware especially), and i’m working on getting back into weightlifting.
+             08.17.2025 – hey, i&apos;m matt. i&apos;m based in chicago and currently work on the sales team at stripe. things i&apos;m into include film, retro hardware (gaming hardware especially), and i&apos;m working on getting back into weightlifting.
 
             </p>
             <p>
@@ -69,7 +69,7 @@ export default function Home() {
           {/* Photos Section */}
           <section id="photos" className="section">
             <h2>pics</h2>
-            <p>Some pictures I've taken recently:</p>
+            <p>Some pictures I&apos;ve taken recently:</p>
             <div className="photo-grid">
               <div className="photo-placeholder">[photo 1]</div>
               <div className="photo-placeholder">[photo 2]</div>
