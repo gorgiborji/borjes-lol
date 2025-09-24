@@ -1,12 +1,116 @@
+// data/content.js
+export const siteContent = {
+  // Site Info
+  title: "borjes.lol",
+  tagline: "born too late and/or too early for most things",
+  
+  // About Section
+  about: {
+    title: "about",
+    content: [
+      "08.17.2025 – hey, i'm matt. i'm based in chicago and currently work on the sales team at stripe. things i'm into include film, retro hardware (gaming hardware especially), and i'm working on getting back into weightlifting."
+    ]
+  },
+
+  // Navigation
+  nav: [
+    { label: "about", href: "#about" },
+    { label: "writing", href: "#blog" },
+    { label: "pics", href: "#photos" },
+    { label: "projects", href: "#projects" },
+    { label: "contact", href: "#contact" }
+  ],
+
+  // Blog Posts
+  blog: {
+    title: "writing",
+    posts: [
+      {
+        title: "Getting Started with Next.js",
+        date: "March 15, 2024",
+        preview: "My journey into modern web development...",
+        slug: "first-post"
+      },
+      {
+        title: "Why I Love Low-Tech Design", 
+        date: "March 10, 2024",
+        preview: "Sometimes simple is better...",
+        slug: "second-post"
+      },
+      {
+        title: "Building My First Personal Site",
+        date: "March 5, 2024", 
+        preview: "From WordPress to Next.js...",
+        slug: "third-post"
+      }
+    ]
+  },
+
+  // Photos Section
+  photos: {
+    title: "pics",
+    description: "Some pictures I've taken recently:",
+    galleryText: "→ view full gallery"
+  },
+
+  // Projects
+  projects: {
+    title: "projects",
+    items: [
+      {
+        name: "borjes.lol",
+        description: "This website! Built with Next.js and deployed on Vercel.",
+        link: "https://github.com/gorgiborji/borjes-lol",
+        linkText: "github"
+      },
+      {
+        name: "Photo Blog", 
+        description: "A simple photo sharing app built with React.",
+        link: "https://photos.borjes.lol",
+        linkText: "live site"
+      },
+      {
+        name: "Learning Journal",
+        description: "Documenting my coding journey and lessons learned.",
+        link: "https://journal.borjes.lol", 
+        linkText: "read more"
+      }
+    ]
+  },
+
+  // Contact
+  contact: {
+    title: "contact",
+    description: "Want to get in touch?",
+    links: [
+      { label: "email", href: "mailto:hello@borjes.lol" },
+      { label: "twitter", href: "https://x.com/ultraremixmatt" },
+      { label: "github", href: "https://github.com/gorgiborji" },
+      { label: "linkedin", href: "https://linkedin.com/in/yourusername" }
+    ]
+  },
+
+  // Footer
+  footer: "© 2025 borjes.lol | Made with Next.js & heart emoji & claude"
+}
+
 // pages/index.js
 import Head from 'next/head'
 import Link from 'next/link'
+import { siteContent } from '../data/content'
+
+// Helper function to safely render text (no more escaping needed!)
+function SafeText({ children }) {
+  return <span dangerouslySetInnerHTML={{ __html: children }} />
+}
 
 export default function Home() {
+  const { title, tagline, about, nav, blog, photos, projects, contact, footer } = siteContent
+
   return (
     <>
       <Head>
-        <title>borjes.lol</title>
+        <title>{title}</title>
         <meta name="description" content="Personal site - blogs, photos, projects" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -15,108 +119,86 @@ export default function Home() {
       <div className="container">
         {/* Header */}
         <header className="header">
-          <h1 className="site-title">borjes.lol</h1>
-          <p className="tagline">born too late and/or too early for most things </p>
+          <h1 className="site-title">{title}</h1>
+          <p className="tagline">{tagline}</p>
         </header>
 
         {/* Navigation */}
         <nav className="nav">
-          <a href="#about">about</a>
-          <a href="#blog">writing</a>
-          <a href="#photos">pics</a>
-          <a href="#projects">projects</a>
-          <a href="#contact">contact</a>
+          {nav.map((item, index) => (
+            <a key={index} href={item.href}>{item.label}</a>
+          ))}
         </nav>
 
         {/* Main Content */}
         <main className="main">
           {/* About Section */}
           <section id="about" className="section">
-            <h2>about</h2>
-            <p>
-             08.17.2025 – hey, i&apos;m matt. i&apos;m based in chicago and currently work on the sales team at stripe. things i&apos;m into include film, retro hardware (gaming hardware especially), and i&apos;m working on getting back into weightlifting.
-
-            </p>
-            <p>
-        
-            </p>
+            <h2>{about.title}</h2>
+            {about.content.map((paragraph, index) => (
+              <p key={index}>
+                <SafeText>{paragraph}</SafeText>
+              </p>
+            ))}
           </section>
-      
 
           {/* Blog Section */}
           <section id="blog" className="section">
-            <h2>writing</h2>
+            <h2>{blog.title}</h2>
             <div className="blog-posts">
-              <article className="blog-post">
-                <h3><a href="/posts/first-post">Getting Started with Next.js</a></h3>
-                <p className="post-date">March 15, 2024</p>
-                <p>My journey into modern web development...</p>
-              </article>
-              <article className="blog-post">
-                <h3><a href="/posts/second-post">Why I Love Low-Tech Design</a></h3>
-                <p className="post-date">March 10, 2024</p>
-                <p>Sometimes simple is better...</p>
-              </article>
-              <article className="blog-post">
-                <h3><a href="/posts/third-post">Building My First Personal Site</a></h3>
-                <p className="post-date">March 5, 2024</p>
-                <p>From WordPress to Next.js...</p>
-              </article>
+              {blog.posts.map((post, index) => (
+                <article key={index} className="blog-post">
+                  <h3><Link href={`/posts/${post.slug}`}>{post.title}</Link></h3>
+                  <p className="post-date">{post.date}</p>
+                  <p>{post.preview}</p>
+                </article>
+              ))}
             </div>
-            <p><a href="/blog">→ view all posts</a></p>
+            <p><Link href="/blog">→ view all posts</Link></p>
           </section>
 
           {/* Photos Section */}
           <section id="photos" className="section">
-            <h2>pics</h2>
-            <p>Some pictures I&apos;ve taken recently:</p>
+            <h2>{photos.title}</h2>
+            <p>{photos.description}</p>
             <div className="photo-grid">
               <div className="photo-placeholder">[photo 1]</div>
               <div className="photo-placeholder">[photo 2]</div>
               <div className="photo-placeholder">[photo 3]</div>
               <div className="photo-placeholder">[photo 4]</div>
             </div>
-            <p><a href="/photos">→ view full gallery</a></p>
+            <p><Link href="/photos">{photos.galleryText}</Link></p>
           </section>
 
           {/* Projects Section */}
           <section id="projects" className="section">
-            <h2>projects</h2>
+            <h2>{projects.title}</h2>
             <div className="projects">
-              <div className="project">
-                <h3>borjes.lol</h3>
-                <p>This website! Built with Next.js and deployed on Vercel.</p>
-                <a href="https://github.com/yourusername/borjes.lol">github</a>
-              </div>
-              <div className="project">
-                <h3>Photo Blog</h3>
-                <p>A simple photo sharing app built with React.</p>
-                <a href="https://photos.borjes.lol">live site</a>
-              </div>
-              <div className="project">
-                <h3>Learning Journal</h3>
-                <p>Documenting my coding journey and lessons learned.</p>
-                <a href="https://journal.borjes.lol">read more</a>
-              </div>
+              {projects.items.map((project, index) => (
+                <div key={index} className="project">
+                  <h3>{project.name}</h3>
+                  <p>{project.description}</p>
+                  <a href={project.link}>{project.linkText}</a>
+                </div>
+              ))}
             </div>
           </section>
 
           {/* Contact Section */}
           <section id="contact" className="section">
-            <h2>contact</h2>
-            <p>Want to get in touch?</p>
+            <h2>{contact.title}</h2>
+            <p>{contact.description}</p>
             <div className="contact-links">
-              <a href="mailto:hello@borjes.lol">email</a>
-              <a href="https://twitter.com/yourusername">twitter</a>
-              <a href="https://github.com/yourusername">github</a>
-              <a href="https://linkedin.com/in/yourusername">linkedin</a>
+              {contact.links.map((link, index) => (
+                <a key={index} href={link.href}>{link.label}</a>
+              ))}
             </div>
           </section>
         </main>
 
         {/* Footer */}
         <footer className="footer">
-          <p>&copy; 2025 borjes.lol | Made with Next.js & heart emoji & claude</p>
+          <p><SafeText>{footer}</SafeText></p>
         </footer>
       </div>
 
@@ -146,6 +228,7 @@ export default function Home() {
           color: #333;
           text-decoration: underline;
           text-decoration-style: wavy;
+          -webkit-text-decoration-style: wavy; /* Safari support */
         }
 
         .tagline {
@@ -162,16 +245,20 @@ export default function Home() {
           padding: 20px;
           border-radius: 10px;
           border: 2px solid #333;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
         }
 
         .nav a {
           color: #333;
           text-decoration: none;
-          margin: 0 20px;
           font-weight: bold;
           padding: 8px 15px;
           border: 1px solid transparent;
           transition: all 0.3s ease;
+          white-space: nowrap;
         }
 
         .nav a:hover {
@@ -317,8 +404,21 @@ export default function Home() {
             padding: 10px;
           }
           
+          .site-title {
+            font-size: 2em;
+            /* Fallback for mobile browsers that don't support wavy underline */
+            text-decoration-style: solid;
+            -webkit-text-decoration-style: solid;
+          }
+          
+          .nav {
+            padding: 15px;
+            gap: 8px;
+          }
+          
           .nav a {
-            margin: 5px 10px;
+            padding: 6px 12px;
+            font-size: 0.9em;
           }
           
           .photo-grid {
@@ -327,6 +427,14 @@ export default function Home() {
           
           .contact-links {
             flex-direction: column;
+          }
+
+          .section {
+            padding: 20px;
+          }
+
+          .header {
+            padding: 20px;
           }
         }
 
